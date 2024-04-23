@@ -167,7 +167,7 @@ Nodo *quitarNodoporId(Nodo **listaPendientes, int id)
 void agregarCompletados(Nodo **listaPendientes, Nodo **listaRealizados)
 {
     int id;
-    printf("\nIngrese el id del nodo que desea eliminar: ");
+    printf("\nIngrese el id del nodo que desea transferir: ");
     scanf("%d", &id);
     Nodo *nodoQuitado = quitarNodoporId(listaPendientes,id);
     nodoQuitado->siguiente = *listaRealizados;
