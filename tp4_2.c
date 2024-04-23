@@ -25,24 +25,63 @@ void mostrarLista(Nodo **lista);
 void eliminarPrimerNodo(Nodo **lista);
 Nodo *quitarNodoporId(Nodo **listaPendientes, int id);
 void agregarCompletados(Nodo **listaPendientes, Nodo **listaRealizados);
-void consultarTareas(Nodo **listaPendientes, Nodo **listaRealizados);
+void consultarTareasporPalabraClave(Nodo **listaPendientes, Nodo **listaRealizados,char *clave);
+void consultarTareasporID(Nodo **listaPendientes, Nodo **listaRealizados, int id);
 
 int main()
 {
-   int id = 1000;
+   srand(time(NULL));
+   char *clave;
+   int id = 1000, operacion = 0, idConsulta;
+   char *buff = (char *)malloc(sizeof(char)*100);
    Nodo *listaTareasPendientes = crearListaVacia();
    Nodo *listaTareasRealizadas = crearListaVacia();
-   agregarNodo(&listaTareasPendientes,&id);
-   printf("\nTareas pendientes");
-   mostrarLista(&listaTareasPendientes);
-   printf("\nTareas realizadas");
-   mostrarLista(&listaTareasRealizadas);
-   mostrarLista(&listaTareasPendientes);
-   agregarCompletados(&listaTareasPendientes, &listaTareasRealizadas);
-   printf("\nTareas pendientes");
-   mostrarLista(&listaTareasPendientes);
-   printf("\nTareas realizadas");
-   mostrarLista(&listaTareasRealizadas);
+   do{
+
+    printf("\nIndique que tarea desea realizar: \n1.Agregar Tareas\n2.Mostrar Lista de tareas pendientes\n3.Mostrar Lista de tareas realizadas\n4.Tranferir tarea de pendientes a realizado5.\n5.Buscar tarea por ID\n6.Buscar tarea por palabra clave\n7.Finalizar");
+    scanf("%d", &operacion);
+    switch (operacion)
+    {
+    case 1:
+      agregarNodo(&listaTareasPendientes, &id);
+      break;
+    case 2:
+      printf("\nTareas pendientes");
+      mostrarLista(&listaTareasPendientes);
+      break;
+    case 3:
+      printf("\nTareas Realizadas");
+      mostrarLista(&listaTareasRealizadas);
+      break;
+    case 4:
+      agregarCompletados(&listaTareasPendientes,&listaTareasRealizadas);
+      break;
+    case 5:
+      printf("\nIndique el id de la tarea que desea buscar: ");
+      scanf("%d", &idConsulta);
+      consultarTareasporID(&listaTareasPendientes,&listaTareasRealizadas,idConsulta);
+      break;
+    case 6:
+      printf("\nIndique la palabra clave de la tarea que desea buscar: ");
+      fflush(stdin);
+      gets(buff);
+      strcpy(clave,buff);
+      free(buff);
+      consultarTareasporPalabraClave(&listaTareasPendientes,&listaTareasRealizadas,clave); 
+      free(clave);      
+      break;
+    }
+   }while(operacion!=7);
+   while(listaTareasPendientes != NULL)
+   {
+      free(listaTareasPendientes->T.Descripcion);
+      eliminarPrimerNodo(&listaTareasPendientes);
+   }
+   while(listaTareasRealizadas != NULL)
+   {
+      free(listaTareasRealizadas->T.Descripcion);
+      eliminarPrimerNodo(&listaTareasRealizadas);
+   }
    return 0;
 }
 int numAleatorios(int min, int max)
