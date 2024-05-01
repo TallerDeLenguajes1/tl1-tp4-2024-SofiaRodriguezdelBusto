@@ -153,11 +153,17 @@ Nodo *quitarNodoporId(Nodo **listaPendientes, int id)
 {
     Nodo *aux = *listaPendientes; 
     Nodo *anterior = *listaPendientes;
+    int cont = 1;
     while (aux != NULL && aux ->T.TareaID != id) {
         anterior = aux;
         aux = aux->siguiente;
+        cont++;
     }
-    if(aux != NULL)
+    if(cont == 1 && aux != NULL)
+    {
+        *listaPendientes = aux->siguiente;
+        aux->siguiente = NULL;
+    }else if(aux != NULL)
     {
        anterior->siguiente = aux->siguiente;
        aux->siguiente = NULL;
